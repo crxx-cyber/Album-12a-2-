@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Erdmiin San 12A Album</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Nunito:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --rose:    #f2a7b8;
+      --peach:   #fcd5b5;
+      --lavender:#d8c7f0;
+      --sky:     #b8d8f2;
+      --mint:    #b5f0d9;
+      --cream:   #fff8f2;
+      --text:    #5a3d4a;
+      --muted:   #9c7d8a;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 18px 40px;
+      background: linear-gradient(to bottom, rgba(0,0,0,.32), transparent);
+    }
+
+    .sign-in-btn {
+      background: rgba(255,255,255,.18);
+      border: 1.5px solid rgba(255,255,255,.55);
+      color: #fff;
+      font-family: 'Nunito', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 9px 26px;
+      border-radius: 30px;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      letter-spacing: .5px;
+      transition: background .25s, transform .2s;
+    }
+    .sign-in-btn:hover { background: rgba(255,255,255,.35); transform: scale(1.04); }
+
+    /* ── HERO SLIDESHOW ── */
+    .hero {
+      position: relative;
+      height: 50vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .slides {
+      position: absolute;
+      inset: 0;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 1.2s ease;
+      background-size: cover;
+      background-position: center;
+    }
+    .slide.active { opacity: 1; }
+
+    /* Gradient placeholder slides — replace background-image URLs with real photos */
+    .slide:nth-child(1) { background: linear-gradient(135deg, #f7c5d4 0%, #fde2cc 50%, #d5c8f5 100%); }
+    .slide:nth-child(2) { background: linear-gradient(135deg, #b8d8f2 0%, #d5efc8 50%, #f7c5d4 100%); }
+    .slide:nth-child(3) { background: linear-gradient(135deg, #d5c8f5 0%, #f7dbb5 50%, #b5f0d9 100%); }
+    .slide:nth-child(4) { background: linear-gradient(135deg, #fde2cc 0%, #b8d8f2 50%, #f7c5d4 100%); }
+
+    /* warm overlay so text stays readable */
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom,
+        rgba(0,0,0,.18) 0%,
+        rgba(80,30,50,.22) 60%,
+        rgba(0,0,0,.45) 100%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 0 20px;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.1rem, 2vw, 1.6rem);
+      font-weight: 700;
+      color: #fff;
+      text-shadow: 0 3px 28px rgba(80,20,50,.45);
+      line-height: 1.15;
+      letter-spacing: .5px;
+      animation: fadeUp .9s ease both;
+    }
+
+    .hero-sub {
+      margin-top: 22px;
+      font-size: clamp(1rem, 2.5vw, 1.55rem);
+      font-weight: 300;
+      color: rgba(255,255,255,.9);
+      letter-spacing: 1.5px;
+      text-shadow: 0 2px 12px rgba(0,0,0,.3);
+      animation: fadeUp .9s .25s ease both;
+    }
+
+    .slide-dots {
+      position: absolute;
+      bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      display: flex;
+      gap: 10px;
+    }
+    .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.45);
+      border: 1.5px solid rgba(255,255,255,.7);
+      cursor: pointer;
+      transition: background .3s, transform .3s;
+    }
+    .dot.active { background: #fff; transform: scale(1.35); }
+
+    /* ── GALLERY SECTION ── */
+    .gallery-section {
+      flex: 1;
+      padding: 72px 40px 60px;
+      max-width: 1300px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .gallery-section h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.5rem, 3vw, 2.1rem);
+      font-style: italic;
+      color: var(--muted);
+      margin-bottom: 40px;
+      text-align: center;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 22px;
+    }
+
+    .album-card {
+      border-radius: 18px;
+      overflow: hidden;
+      cursor: pointer;
+      box-shadow: 0 6px 24px rgba(180,120,150,.15);
+      transition: transform .35s cubic-bezier(.34,1.56,.64,1), box-shadow .35s;
+      position: relative;
+      background: #fff;
+    }
+    .album-card:hover {
+      transform: scale(1.08);
+      box-shadow: 0 16px 44px rgba(180,100,140,.28);
+    }
+
+    .album-thumb {
+      width: 100%;
+      aspect-ratio: 1;
+      display: block;
+      object-fit: cover;
+    }
+
+    /* Colored placeholder thumbs */
+    .album-thumb-placeholder {
+      width: 100%;
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+    }
+
+    .album-card:nth-child(1) .album-thumb-placeholder { background: linear-gradient(135deg, #f7c5d4, #fde2cc); }
+    .album-card:nth-child(2) .album-thumb-placeholder { background: linear-gradient(135deg, #d5c8f5, #b8d8f2); }
+    .album-card:nth-child(3) .album-thumb-placeholder { background: linear-gradient(135deg, #b5f0d9, #d5efc8); }
+    .album-card:nth-child(4) .album-thumb-placeholder { background: linear-gradient(135deg, #fde2cc, #f7c5d4); }
+    .album-card:nth-child(5) .album-thumb-placeholder { background: linear-gradient(135deg, #b8d8f2, #d5c8f5); }
+    .album-card:nth-child(6) .album-thumb-placeholder { background: linear-gradient(135deg, #f7c5d4, #b5f0d9); }
+
+    .album-label {
+      padding: 12px 14px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: .3px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: linear-gradient(135deg, #f7c5d4 0%, #d5c8f5 60%, #b8d8f2 100%);
+      text-align: center;
+      padding: 34px 20px;
+    }
+
+    footer p {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(1rem, 2.4vw, 1.3rem);
+      color: var(--text);
+      text-shadow: 0 1px 4px rgba(255,255,255,.6);
+      line-height: 1.6;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <button class="sign-in-btn">Sign in</button>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="slides">
+      <div class="slide active"></div>
+      <div class="slide"></div>
+      <div class="slide"></div>
+      <div class="slide"></div>
+    </div>
+
+    <div class="hero-content">
+      <h1 class="hero-title">Erdmiin San 12A Album</h1>
+      <p class="hero-sub">Дурсамжаа оруул</p>
+    </div>
+
+    <div class="slide-dots">
+      <div class="dot active" data-i="0"></div>
+      <div class="dot" data-i="1"></div>
+      <div class="dot" data-i="2"></div>
+      <div class="dot" data-i="3"></div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <main class="gallery-section">
+    <h2>Ангийн дурсамжууд ✨</h2>
+    <div class="gallery-grid">
+      <div class="album-card">
+        <div class="album-thumb-placeholder">🌸</div>
+        <div class="album-label">Хичээлийн жил</div>
+      </div>
+      <div class="album-card">
+        <div class="album-thumb-placeholder">🎓</div>
+        <div class="album-label">Төгсөлтийн өдөр</div>
+      </div>
+      <div class="album-card">
+        <div class="album-thumb-placeholder">🏕️</div>
+        <div class="album-label">Аялал</div>
+      </div>
+      <div class="album-card">
+        <div class="album-thumb-placeholder">🎉</div>
+        <div class="album-label">Найр наадам</div>
+      </div>
+      <div class="album-card">
+        <div class="album-thumb-placeholder">📚</div>
+        <div class="album-label">Шалгалтын өдрүүд</div>
+      </div>
+      <div class="album-card">
+        <div class="album-thumb-placeholder">💫</div>
+        <div class="album-label">Дурсамж</div>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>Хайртай шүү guys,<br>Төгсөөд алга болчих воо !! 🌷</p>
+  </footer>
+
+  <script>
+    // Slideshow
+    const slides = document.querySelectorAll('.slide');
+    const dots   = document.querySelectorAll('.dot');
+    let current  = 0;
+    let timer;
+
+    function goTo(n) {
+      slides[current].classList.remove('active');
+      dots[current].classList.remove('active');
+      current = (n + slides.length) % slides.length;
+      slides[current].classList.add('active');
+      dots[current].classList.add('active');
+    }
+
+    function next() { goTo(current + 1); }
+
+    function startAuto() { timer = setInterval(next, 4000); }
+    function stopAuto()  { clearInterval(timer); }
+
+    dots.forEach(d => {
+      d.addEventListener('click', () => {
+        stopAuto();
+        goTo(+d.dataset.i);
+        startAuto();
+      });
+    });
+
+    startAuto();
+  </script>
+</body>
+</html>
